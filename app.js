@@ -9,7 +9,7 @@ app.get('/', (req, res) => {
 
 // Handle API route
 app.get('/api/customers', (req, res) => {
-  res.send(['Ahmed', 'Ali', 'Mark']);
+  res.send(['Ahmed', 'Ali', 'Mark', 'Mona']);
 });
 
 // app.post()
