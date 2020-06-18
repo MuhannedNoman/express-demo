@@ -7,6 +7,11 @@ app.get('/', (req, res) => {
   res.send('Hello World!!');
 });
 
+// Handle API route
+app.get('/api/customers', (req, res) => {
+  res.send(['Ahmed', 'Ali', 'Mark']);
+});
+
 // app.post()
 
 // app.put()
