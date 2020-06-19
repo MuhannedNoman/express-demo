@@ -52,6 +52,11 @@ app.get('/api/customers/:id/:date/:name', (req, res) => {
 
 // Add a new customer
 app.post('/api/customers', (req, res) => {
+  if (!req.body.name || req.body.name.length < 3) {
+    // 400 bad request
+    res.status(400).send('Name is required and should be minimum 3 characters');
+    return;
+  }
   const customer = {
     id: customers.length + 1,
     name: req.body.name,
