@@ -1,5 +1,6 @@
 const express = require('express');
 const Joi = require('joi');
+const e = require('express');
 
 const app = express();
 
@@ -76,7 +77,8 @@ app.put('/api/customers/:id', (req, res) => {
   const customer = customers.find(
     (customer) => customer.id === parseInt(req.params.id)
   );
-  if (!customer) res.status(404).send('The current customer was not found');
+  if (!customer)
+    res.status(404).send('The customer with the given id was not found');
 
   const { error } = validateCustomer(req.body);
   if (error) {
@@ -88,7 +90,21 @@ app.put('/api/customers/:id', (req, res) => {
   res.send(customer);
 });
 
-// app.delete()
+// Delete resource
+app.delete('/api/customers/:id', (req, res) => {
+  const customer = customers.find(
+    (customer) => customer.id === parseInt(req.params.id)
+  );
+  if (!customer) {
+    res.status(404).send('The customer with the given id was not found');
+  } else {
+    const index = customers.indexOf(customer);
+    // Delete the selected object
+    customers.splice(index, 1);
+
+    res.send(customer);
+  }
+});
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
