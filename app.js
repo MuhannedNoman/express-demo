@@ -36,6 +36,7 @@ app.get('/api/customers/:id', (req, res) => {
   const customer = customers.find(
     (customer) => customer.id === parseInt(req.params.id)
   );
+  // 404 resource not found
   if (!customer)
     res.status(404).send('The customer with the given id was not found');
   res.send(customer);
@@ -53,15 +54,11 @@ app.get('/api/customers/:id/:date/:name', (req, res) => {
 
 // Add a new customer
 app.post('/api/customers', (req, res) => {
-  const schema = {
-    name: Joi.string().min(3).required(),
-  };
+  const { error } = validateCustomer(req.body);
 
-  const result = Joi.validate(req.body, schema);
-
-  if (result.error) {
+  if (error) {
     // 400 bad request
-    res.status(400).send(result.error.details[0].message);
+    res.status(400).send(error.details[0].message);
     return;
   }
   const customer = {
@@ -74,7 +71,22 @@ app.post('/api/customers', (req, res) => {
   res.send(customer);
 });
 
-// app.put()
+// Update resource
+app.put('/api/customers/:id', (req, res) => {
+  const customer = customers.find(
+    (customer) => customer.id === parseInt(req.params.id)
+  );
+  if (!customer) res.status(404).send('The current customer was not found');
+
+  const { error } = validateCustomer(req.body);
+  if (error) {
+    res.status(400).send(error.details[0].message);
+    return;
+  }
+
+  customer.name = req.body.name;
+  res.send(customer);
+});
 
 // app.delete()
 
@@ -82,3 +94,10 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server is listening in port ${PORT}`);
 });
+
+function validateCustomer(customer) {
+  const schema = {
+    name: Joi.string().min(3).required(),
+  };
+  return Joi.validate(customer, schema);
+}
