@@ -39,7 +39,7 @@ app.get('/api/customers/:id', (req, res) => {
   );
   // 404 resource not found
   if (!customer)
-    res.status(404).send('The customer with the given id was not found');
+    return res.status(404).send('The customer with the given id was not found');
   res.send(customer);
 });
 
@@ -57,11 +57,9 @@ app.get('/api/customers/:id/:date/:name', (req, res) => {
 app.post('/api/customers', (req, res) => {
   const { error } = validateCustomer(req.body);
 
-  if (error) {
-    // 400 bad request
-    res.status(400).send(error.details[0].message);
-    return;
-  }
+  // 400 bad request
+  if (error) return res.status(400).send(error.details[0].message);
+
   const customer = {
     id: customers.length + 1,
     name: req.body.name,
@@ -78,13 +76,10 @@ app.put('/api/customers/:id', (req, res) => {
     (customer) => customer.id === parseInt(req.params.id)
   );
   if (!customer)
-    res.status(404).send('The customer with the given id was not found');
+    return res.status(404).send('The customer with the given id was not found');
 
   const { error } = validateCustomer(req.body);
-  if (error) {
-    res.status(400).send(error.details[0].message);
-    return;
-  }
+  if (error) return res.status(400).send(error.details[0].message);
 
   customer.name = req.body.name;
   res.send(customer);
@@ -95,15 +90,14 @@ app.delete('/api/customers/:id', (req, res) => {
   const customer = customers.find(
     (customer) => customer.id === parseInt(req.params.id)
   );
-  if (!customer) {
-    res.status(404).send('The customer with the given id was not found');
-  } else {
-    const index = customers.indexOf(customer);
-    // Delete the selected object
-    customers.splice(index, 1);
+  if (!customer)
+    return res.status(404).send('The customer with the given id was not found');
 
-    res.send(customer);
-  }
+  const index = customers.indexOf(customer);
+  // Delete the selected object
+  customers.splice(index, 1);
+
+  res.send(customer);
 });
 
 const PORT = process.env.PORT || 3000;
