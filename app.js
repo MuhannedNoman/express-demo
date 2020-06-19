@@ -53,9 +53,15 @@ app.get('/api/customers/:id/:date/:name', (req, res) => {
 
 // Add a new customer
 app.post('/api/customers', (req, res) => {
-  if (!req.body.name || req.body.name.length < 3) {
+  const schema = {
+    name: Joi.string().min(3).required(),
+  };
+
+  const result = Joi.validate(req.body, schema);
+
+  if (result.error) {
     // 400 bad request
-    res.status(400).send('Name is required and should be minimum 3 characters');
+    res.status(400).send(result.error.details[0].message);
     return;
   }
   const customer = {
