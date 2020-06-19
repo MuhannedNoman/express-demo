@@ -2,6 +2,9 @@ const express = require('express');
 
 const app = express();
 
+// Allow body parse
+app.use(express.json());
+
 const customers = [
   {
     id: 1,
@@ -47,7 +50,17 @@ app.get('/api/customers/:id/:date/:name', (req, res) => {
   res.send(req.query);
 });
 
-// app.post()
+// Add a new customer
+app.post('/api/customers', (req, res) => {
+  const customer = {
+    id: customers.length + 1,
+    name: req.body.name,
+  };
+
+  customers.push(customer);
+
+  res.send(customer);
+});
 
 // app.put()
 
