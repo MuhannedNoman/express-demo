@@ -1,4 +1,5 @@
 const express = require('express');
+const config = require('config');
 const helmet = require('helmet');
 const morgan = require('morgan');
 const Joi = require('joi');
@@ -7,8 +8,13 @@ const authenticator = require('./authenticator');
 
 const app = express();
 
-console.log(`NODE_ENV: ${process.env.NODE_ENV}`);
+// console.log(`NODE_ENV: ${process.env.NODE_ENV}`);
 // console.log(`app: ${app.get('env')}`);
+
+// Configration
+console.log(`Application Name: ${config.get('name')}`);
+console.log(`Application Name: ${config.get('mail.host')}`);
+console.log(`Application Name: ${config.get('mail.password')}`);
 
 app.use(helmet());
 if (app.get('env') === 'development') {
