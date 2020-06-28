@@ -1,8 +1,14 @@
 const express = require('express');
 const Joi = require('joi');
-const e = require('express');
+const logger = require('./logger');
+const authenticator = require('./authenticator');
 
 const app = express();
+
+// use() -> create a middleware, next refers to the next middlware that take control after this function.
+app.use(logger);
+
+app.use(authenticator);
 
 // Allow body parse
 app.use(express.json());
