@@ -12,6 +12,9 @@ app.use(authenticator);
 
 // Allow body parse
 app.use(express.json());
+app.use(express.urlencoded({ extended: true })); // parse key&value url old version
+// use this to serve static files.
+app.use(express.static('public'));
 
 const customers = [
   {
