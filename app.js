@@ -1,3 +1,5 @@
+const startupDebugger = require('debug')('app:startup');
+const dbDebugger = require('debug')('app:db');
 const express = require('express');
 const helmet = require('helmet');
 const morgan = require('morgan');
@@ -12,7 +14,8 @@ const app = express();
 app.use(helmet());
 if (env.NODE_ENV === 'development') {
   app.use(morgan('tiny'));
-  console.log('Morgan enabled...');
+  startupDebugger('Morgan enabled...');
+  dbDebugger('DB stuff');
 }
 
 // use() -> create a middleware, next refers to the next middlware that take control after this function.

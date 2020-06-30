@@ -1,4 +1,5 @@
 module.exports = {
-  NODE_ENV: 'production',
-  password: '123456',
+  NODE_ENV: 'development',
+  PASSWORD: '123456',
+  DEBUG: 'app:startup',
 };

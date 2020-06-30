@@ -5,12 +5,13 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon app.js"
+    "start": "set DEBUG=app:startup&&nodemon app.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "debug": "^4.1.1",
     "express": "^4.17.1",
     "helmet": "^3.23.3",
     "joi": "^14.3.1",
