@@ -11,6 +11,10 @@ const env = require('./env');
 
 const app = express();
 
+// Set the view engein.
+app.set('view engine', 'pug');
+app.set('views', './views'); //default, change if you wanna override
+
 app.use(helmet());
 if (env.NODE_ENV === 'development') {
   app.use(morgan('tiny'));
@@ -46,7 +50,8 @@ const customers = [
 
 // Route handler
 app.get('/', (req, res) => {
-  res.send('Hello World!!');
+  // res.send('Hello World!!');
+  res.render('index', { title: 'Hello world', message: 'My First template' });
 });
 
 // Handle API route
